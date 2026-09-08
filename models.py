@@ -1,4 +1,4 @@
-from random import random, randint, choices
+from random import random, randint, choice, choices
 
 TOOL = "professional-looking value"
 ITEM = "even more proffessional-looking value"
@@ -12,6 +12,7 @@ ELECDAMAGE = 'models5'
 POISON = 'models6'
 FLEE = 'models7'
 SUMMON = 'models8'
+DEFEND = 'models9'
 
 SELF = 'models20'
 FIELD = 'models21'
@@ -54,16 +55,23 @@ class Item():
                     else:
                         entity.ep += effect[1]
                         output += f"{entity.Name} recharged for {int(effect[1])}ep.\n"
-                elif effect[0] == HEALOVERTIME or effect[0] == RECHARGEOVERTIME or effect[0] == POISON:
-                    entity.effects += effect
+                elif effect[0] == HEALOVERTIME:
+                    entity.effects.append(effect)
+                    output += f"{entity.Name} gained {int(effect[2])} turns of healing.\n"
+                elif effect[0] == RECHARGEOVERTIME:
+                    entity.effects.append(effect)
+                    output += f"{entity.Name}'s ep started recovering.\n"
+                elif effect[0] == POISON:
+                    entity.effects.append(effect)
+                    output += f"{entity.Name} was poisoned for {int(effect[1])} turns!\n"
                 elif effect[0] == DAMAGE:
                     recv_damage = entity.RecvDamage(effect[1])
                     if recv_damage == False:
-                        output += (f"{entity.Name} dodged the attack!")
+                        output += (f"{entity.Name} took!\n")
                     else:
-                        output += (f"{entity.Name} took {recv_damage} damage.")
+                        output += (f"{entity.Name} took {recv_damage} damage.\n")
                 elif effect[0] == ELECDAMAGE:
-                    output += (f"{entity.Name} took {entity.RecvElecDamage(effect[1])} electrical damage.")
+                    output += (f"{entity.Name} took {entity.RecvElecDamage(effect[1])} electrical damage.\n")
                 elif effect[0] == FLEE:
                     pass
                 elif effect[0] == SUMMON:
@@ -96,7 +104,7 @@ class Tool():
 
         self.isUsed = False
 
-    def UseTool(self, user, target):
+    def UseTool(self, user, target, enemies):
         '''Returns string of use text'''
         output = f"{user.Name} {self.useText} on {target.Name if user != target else 'themself'}.\n"
         #pick a random effect
@@ -110,7 +118,7 @@ class Tool():
         effect = choices(self.effects, [x[2] for x in self.effects])[0]
 
         if effect[0] == "None":
-            output += "...but nothing happens!"
+            output += "...but nothing happens!\n"
             return output
 
         #if self targetting, adject targets
@@ -120,7 +128,7 @@ class Tool():
         #if magnifier uses stats, adjust value
         if type(effect[1]) == type(1):
             pass
-        elif effect[1].isnumeric():
+        elif effect[1].strip('-').isnumeric():
             effect[1] = int(effect[1])
         elif '*' in effect[1]:
             attr, mult = effect[1].split('*')
@@ -147,16 +155,23 @@ class Tool():
                 else:
                     target.ep += effect[1]
                     output += f"{target.Name} recharged for {int(effect[1])}ep.\n"
-            elif effect[0] == HEALOVERTIME or effect[0] == RECHARGEOVERTIME or effect[0] == POISON:
-                target.effects += effect
+            elif effect[0] == HEALOVERTIME:
+                target.effects.append(effect)
+                output += f"{target.Name} gained {int(effect[2])} turns of healing.\n"
+            elif effect[0] == RECHARGEOVERTIME:
+                target.effects.append(effect)
+                output += f"{target.Name}'s ep started recovering.\n"
+            elif effect[0] == POISON:
+                target.effects.append(effect)
+                output += f"{target.Name} was poisoned for {int(effect[1])} turns!\n"
             elif effect[0] == DAMAGE:
                 recv_damage = target.RecvDamage(effect[1])
                 if recv_damage == False:
-                    output += (f"{target.Name} dodged the attack!")
+                    output += (f"{target.Name} dodged the attack!\n")
                 else:
-                    output += (f"{target.Name} took {recv_damage} damage.")
+                    output += (f"{target.Name} took {recv_damage} damage.\n")
             elif effect[0] == ELECDAMAGE:
-                output += (f"{target.Name} took {target.RecvElecDamage(effect[1])} electrical damage.")
+                output += (f"{target.Name} took {target.RecvElecDamage(effect[1])} electrical damage.\n")
             elif effect[0] == FLEE:
                 pass
             elif effect[0] == SUMMON:
@@ -166,14 +181,22 @@ class Tool():
         else:
             if type(effect[1]) == type(1):
                 pass
-            elif effect[1].isnumeric():
+            elif effect[1].isnumeric() or '-' in effect[1]:
                 effect[1] = int(effect[1])
             else:
                 effect[1] = getattr(user, effect[1])
-            prev = getattr(target, effect[0])
-            new = prev+effect[1]
-            output += f"{target.Name}'s {effect[0]} was increased by {effect[1]}.\n"
-            setattr(target, effect[0], new)
+            #check for effect modifiers
+            if len(effect) == 4 and effect[3] == ENEMIES:
+                for enemy in enemies:
+                    prev = getattr(enemy[2], effect[0])
+                    new = prev+effect[1]
+                    output += f"{enemy[2].Name}'s {effect[0]} was increased by {effect[1]}.\n"
+                    setattr(enemy[2], effect[0], new)
+            else:
+                prev = getattr(target, effect[0])
+                new = prev+effect[1]
+                output += f"{target.Name}'s {effect[0]} was increased by {effect[1]}.\n"
+                setattr(target, effect[0], new)
         return output
 
 class Entity():
@@ -206,11 +229,30 @@ class Entity():
 
     def GetStats(self):
         '''Returns HP, MaxHP, EP, MaxEP, DF, TempDF, ATK and TempATK'''
-        return self.hp, self.hp_max, self.ep, self.ep_max, self.df, self.df_tmp, self.atk, self.atk_tmp
+        return self.hp, self.hp_max, self.ep, self.ep_max, self.df, self.df_tmp + self.df_pw if DEFEND in self.effects else self.df_tmp, self.atk, self.atk_tmp
 
     def GameTick(self):
         '''Progresses the battle one turn forward. Lose one stack of effects and recharge all tools.'''
-        self.ap_tmp, self.df_tmp = 0, 0
+        for effect in self.effects:
+            if effect == DEFEND:
+                self.effects.remove(DEFEND)
+            elif effect[0] == HEALOVERTIME:
+                effect[1], effect[2] = int(effect[1]), int(effect[2])
+                self.hp = min(self.hp_max, self.hp + effect[1])
+                effect[2] -= 1
+                if effect[2] == 0:
+                    self.effects.remove(effect)
+            elif effect[0] == RECHARGEOVERTIME:
+                self.ep = min(self.ep_max, self.ep + effect[1])
+            elif effect[0] == POISON:
+                effect[1] = int(effect[1])
+                if effect[1] <= 0:
+                    self.effects.remove(effect)
+                else:
+                    self.hp -= effect[1]
+                    effect[1] -= 1
+                    if effect[1] <= 0:
+                        self.effects.remove(effect)
         for tool in self.tools.keys():
             self.tools[tool] = True
 
@@ -222,7 +264,7 @@ class Entity():
 
     def Defend(self):
         '''Gains df_pw in defence, returns extra df gained'''
-        self.df_tmp += self.df_pw
+        self.effects.append(DEFEND)
         return self.df_pw
 
     def RecvDamage(self, damage=0):
@@ -230,14 +272,20 @@ class Entity():
         Returns False if dodged, else true damage dealt'''
         if random() < self.dc:
             return False
-        true_damage = max(damage-self.df-self.df_tmp, 0)
+        if DEFEND in self.effects:
+            true_damage = max(damage-self.df-self.df_tmp-self.df_pw, 0)
+        else:
+            true_damage = max(damage-self.df-self.df_tmp, 0)
         self.hp -= true_damage
         return true_damage
 
     def RecvElecDamage(self, damage=0):
         '''Change entity's hp by damage, affected by defence, but not dodge chance
         Returns true damage dealt'''
-        true_damage = max(damage-self.df-self.df_tmp, 0)
+        if DEFEND in self.effects:
+            true_damage = max(damage-self.df-self.df_tmp-self.df_pw, 0)
+        else:
+            true_damage = max(damage-self.df-self.df_tmp, 0)
         self.hp -= true_damage
         return true_damage
 
@@ -253,7 +301,7 @@ class Entity():
         '''Returns list of items and amounts'''
         output = []
         for item, count in self.inv.items():
-            output.append([item.Name, count])
+            output.append([item.Name, count, item.desc])
         return output
 
     def RemoveItem(self, itemName):
@@ -313,28 +361,45 @@ class Enemy(Entity):
         "can gain multiple of the same tool"
         self.tools[tool] = True
 
-    def DoTurn(self, player):
+    def DoTurn(self, player, enemies):
         '''Based on its species, does something
            Returns just damage if it chooses to attack, else strings if it uses stuff'''
-        if self.species == 'H' and len(self.tools.keys()) == 0:
+        output = ""
+        if self.Name == "B4RT3ND3R":
+            for tool in self.tools.keys():
+                self.UseTool(tool.Name)
+                if tool.Name == "Green Bottle":
+                    enemy = choice([x[2] for x in enemies])
+                    output += tool.UseTool(self, enemy, enemies)
+                else:
+                    output += tool.UseTool(self, player, enemies)
+            return [output]
+        elif self.Name == 'Riverboat Gambler':
+            for tool in self.tools.keys():
+                self.UseTool(tool.Name)
+                output += tool.UseTool(self, self, enemies)
+            return [self.DealDamage(), output]
+        elif self.Name == "R1V3RB04T_CR1TT3R":
+            for tool in self.tools.keys():
+                self.UseTool(tool.Name)
+                output += tool.UseTool(self, self, enemies)
+            return [output]
+        elif self.species == 'H' and len(self.tools.keys()) == 0:
             return [self.DealDamage()]
         elif self.species == 'Z':
-            output = ""
             for tool in self.tools.keys():
                 self.UseTool(tool.Name)
-                output += tool.UseTool(self, player)
+                output += tool.UseTool(self, player, enemies)
             return [output]
         elif self.species == 'R':
-            output = ""
             for tool in self.tools.keys():
                 self.UseTool(tool.Name)
-                output += tool.UseTool(self, player)
+                output += tool.UseTool(self, player, enemies)
             return [output]
         else:
-            output = ""
             for tool in self.tools.keys():
                 self.UseTool(tool.Name)
-                output += tool.UseTool(self, player)
+                output += tool.UseTool(self, player, enemies)
             return [self.DealDamage(), output]
         
     
@@ -349,8 +414,18 @@ class Player(Entity):
         self.xp = 0
 
     def GetStats(self):
-        '''Returns HP, MaxHP, EP, MaxEP, DF, TempDF, ATK, TempATK, lvl, xp and required xp'''
-        return self.hp, self.hp_max, self.ep, self.ep_max, self.df, self.df_tmp, self.atk, self.atk_tmp, self.lvl, self.xp, 10*self.lvl
+        '''Returns HP, MaxHP, EP, MaxEP, DF, TempDF, ATK, TempATK, lvl, xp, required xp and effects, if any'''
+        effect_output = []
+        for effect in self.effects:
+            if effect == DEFEND:
+                effect_output.append(f"DEFEND")
+            elif effect[0] == POISON:
+                effect_output.append(f"POISON[{effect[1]}]")
+            elif effect[0] == HEALOVERTIME:
+                effect_output.append(f"HEAL[{effect[2]}]")
+            elif effect[0] == RECHARGEOVERTIME:
+                effect_output.append(f"RECHARGE")
+        return self.hp, self.hp_max, self.ep, self.ep_max, self.df, self.df_tmp, self.atk, self.atk_tmp, self.lvl, self.xp, 10*self.lvl, effect_output
 
     def gainXP(self, xp):
         '''Returns True if player leveled up'''
@@ -362,5 +437,6 @@ class Player(Entity):
             self.hp += 5
             self.atk += 1
             self.df += 1
+            self.lk == 1
             return True
     

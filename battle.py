@@ -2,6 +2,8 @@ import pygame, sys
 from random import random, randint, choices
 import models
 
+WaitOneSec = pygame.USEREVENT + 1
+
 effects_dict = {
     "heal":models.HEAL,
     "recharge":models.RECHARGE,
@@ -36,7 +38,7 @@ def GetItem(itemID):
                 item = item.strip().split('|')
                 if item[0] == itemID:
                     effects = []
-                    for effect in item[2:]:
+                    for effect in item[3:]:
                         effect = effect.split(',')
                         new_effect = []
                         for x in effect:
@@ -45,7 +47,7 @@ def GetItem(itemID):
                             else:
                                 new_effect.append(x)
                         effects.append(new_effect)
-                    return models.Item(Name = item[1], effects = effects)
+                    return models.Item(Name = item[1], effects = effects, desc = item[2])
                     
 
     elif itemID[0] == 'T':
@@ -54,7 +56,7 @@ def GetItem(itemID):
                 tool = tool.strip().split('|')
                 if tool[0] == itemID:
                     effects = []
-                    for effect in tool[4:]:
+                    for effect in tool[5:]:
                         effect = effect.split(',')
                         new_effect = []
                         for x in effect:
@@ -63,7 +65,7 @@ def GetItem(itemID):
                             else:
                                 new_effect.append(x)
                         effects.append(new_effect)
-                    return models.Tool(Name = tool[1], cost = int(tool[2]), cooldown = int(tool[3]), effects = effects)
+                    return models.Tool(Name = tool[1], cost = int(tool[2]), cooldown = int(tool[3]), effects = effects, desc = tool[4])
     else:
         return None
 
@@ -145,7 +147,7 @@ def SetUpBattle(SceneID, threat):
                     weights = []
                     for enemyID in filler:
                         weights.append(GetThreat(enemyID))
-                    while threat > 0 and len(enemies) < 5:
+                    while threat > 0.9 and len(enemies) < 5:
                         choice = choices(filler, weights)[0]
                         enemy_threat = GetThreat(choice)
                         if enemy_threat <= threat:
@@ -156,7 +158,7 @@ def SetUpBattle(SceneID, threat):
                     weights = []
                     for enemyID in enemiesID:
                         weights.append(GetThreat(enemyID))
-                    while threat > 0 and len(enemies) < 5:
+                    while threat > 0.9 and len(enemies) < 5:
                         choice = choices(enemiesID, weights)[0]
                         enemy_threat = GetThreat(choice)
                         if enemy_threat <= threat:
@@ -167,14 +169,15 @@ def SetUpBattle(SceneID, threat):
 
 def StartBattle(title, img, bg_colour, player, enemies):
     '''Starts a Battle.
-    title should be title, img should be bg img, player should be entity object, enemies should be list of entity objects'''
+    title should be title, img should be bg img, player should be entity object, enemies should be list of entity objects
+    Returns True if match won, False if match lost'''
 
     announcements = ["It's your turn."]
 
     #initialise pygame
     pygame.init()
     WIDTH, HEIGHT = 1440, 810
-    FPS = 60
+    FPS, VOLUME = 60, 1
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     clock = pygame.time.Clock()
 
@@ -185,7 +188,16 @@ def StartBattle(title, img, bg_colour, player, enemies):
     pygame.display.set_caption(title)
     bg_img = pygame.image.load(img).convert_alpha()
     bg_img = pygame.transform.scale(bg_img, screen.get_rect().size)
-    screen.blit(bg_img, (0,0))  
+    screen.blit(bg_img, (0,0))
+    pygame.mixer.init()
+    if title.strip() == "Street":
+        pygame.mixer.music.load("audio/fight.wav")
+    elif title.strip() == "Zouquee GoGo":
+        pygame.mixer.music.load("audio/club.wav")
+    elif title.strip() == "Riverboat":
+        pygame.mixer.music.load("audio/chill.wav")
+    pygame.mixer.music.set_volume(VOLUME)
+    pygame.mixer.music.play(-1)
 
     #set up UI
     info_surf = pygame.Surface((300, 200), pygame.SRCALPHA)
@@ -217,7 +229,7 @@ def StartBattle(title, img, bg_colour, player, enemies):
     while isBattling:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                isBattling = False
+                pass #don't let player quit out of battle
 
             elif event.type == pygame.KEYDOWN: 
                 if event.key == pygame.K_1: #if key 1 pressed:
@@ -285,9 +297,9 @@ def StartBattle(title, img, bg_colour, player, enemies):
                             for enemy in enemies: #check if item was used on an enemy
                                 if enemy[1].collidepoint(event.pos):
                                     isUsedOnEnemy = True
-                                    output = tool.UseTool(player, enemy[2])
+                                    output = tool.UseTool(player, enemy[2], enemies)
                             if not isUsedOnEnemy:
-                                output = tool.UseTool(player, player)
+                                output = tool.UseTool(player, player, enemies)
                             for line in output.split('\n'):
                                 if line:
                                     announcements.append(line)
@@ -302,7 +314,7 @@ def StartBattle(title, img, bg_colour, player, enemies):
                             next_enemy = enemy[2]
                             break
 
-                    output = next_enemy.DoTurn(player)
+                    output = next_enemy.DoTurn(player, enemies)
                     if type(output[-1]) == type(""):
                         announcements.extend(output[-1].strip().split('\n'))
                     if type(output[0]) == type((0,0)):
@@ -355,7 +367,12 @@ def StartBattle(title, img, bg_colour, player, enemies):
                             player.GainItem(item)
                 turnOrder.remove(enemy[0])
                 enemies.remove(enemy)
-                
+
+        #check if player has won or lost
+        if player.IsDead():
+            announcements.append(f"You died!!")
+        elif len(enemies) == 0:
+            announcements.append(f"You won!!")
 
         #draw in the order bg > enemy > tint > text > bottomline > infotext
         screen.blit(bg_img, (0,0))
@@ -382,7 +399,7 @@ def StartBattle(title, img, bg_colour, player, enemies):
             text_surf.blit(text_render, (10, 10))
             inv = player.GetInventory()
             for i in range(len(inv)):
-                text_render = font.render(f"{inv[i][0]:<20}{inv[i][1]}", True, (255,255,255) if i != (selectedItem-1) else (255,220,100))
+                text_render = font.render(f"{inv[i][0]:<25}{inv[i][1]:<5}{inv[i][2]}", True, (255,255,255) if i != (selectedItem-1) else (255,220,100))
                 text_surf.blit(text_render, (12, 40+(25*i)))
         elif battleMode == 4: #print tools
             text_render = header_font.render("TOOLS (CLICK ON ENEMY TO USE ON ENEMY, CLICK ANYWHERE ELSE TO USE ON SELF)", True, (255,220,100) if selectedItem == 0 else (255,255,255))
@@ -397,9 +414,10 @@ def StartBattle(title, img, bg_colour, player, enemies):
                 text_surf.blit(text_render, (10, int(HEIGHT*0.3)-5-(25*i)))
         screen.blit(text_surf, (WIDTH*0.05, HEIGHT*0.70-60))
 
+        #bottom bar
         bottom_surf.fill((0,0,0,255))
-        HP, MaxHP, EP, MaxEP, DF, TempDF, ATK, TempATK, LVL, XP, XP_REQ = player.GetStats()
-        bottom_render = header_font.render(f"HP:{f'{HP}/{MaxHP}':<10}EP:{f'{EP}/{MaxEP}':<10}DF:{f'{DF}' if TempDF == 0 else f'{DF} + {TempDF}':<10}ATK:{f'{ATK}' if TempATK == 0 else f'{ATK} + {TempATK}':<10}LVL:{LVL:<10}XP:{f'{XP}/{XP_REQ}':<10}", True, (255, 255, 255))
+        HP, MaxHP, EP, MaxEP, DF, TempDF, ATK, TempATK, LVL, XP, XP_REQ, effects = player.GetStats()
+        bottom_render = header_font.render(f"HP:{f'{HP}/{MaxHP}':<8}EP:{f'{EP}/{MaxEP}':<8}DF:{f'{DF}' if TempDF == 0 else f'{DF} + {TempDF}':<8}ATK:{f'{ATK}' if TempATK == 0 else f'{ATK} + {TempATK}':<8}LVL:{LVL:<6}XP:{f'{XP}/{XP_REQ}':<8}{f'{effects}' if effects else ''}", True, (255, 255, 255))
         bottom_surf.blit(bottom_render, (10, 10))
         screen.blit(bottom_surf, (0, HEIGHT-50))
 
@@ -418,10 +436,16 @@ def StartBattle(title, img, bg_colour, player, enemies):
         pygame.display.flip()
         clock.tick(FPS)
 
-        if len(enemies) == 0:
-            announcements.append(f"You win!!")
+        #leave text on screen for 2 seconds, then quit the battle
+        if player.IsDead():
             pygame.time.delay(2000)
-            isBattling = False
+            pygame.quit()
+            return False
+        elif len(enemies) == 0:
+            player.effects = []
+            player.GameTick()
+            pygame.time.delay(2000)
+            pygame.quit()
+            return True
 
     pygame.quit()
-    sys.exit()

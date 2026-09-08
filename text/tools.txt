@@ -1,23 +1,24 @@
-#ID|Name|Cost|Cooldown|Effects...
+#ID|Name|Cost|Cooldown|desc|Effects...
 #Cooldown of 0 means usable infinite times every turn, cooldown of 1 means usable every turn, cooldown of 2 means usable every 2 turns, etc
 ##Make sure damage effect can crit
 #Effects in the form effect, value, probability in weight, modifier...
-T01|Gnaw|2|1|damage,atk,100
-T02|Broken Rifle|2|1|elecdamage,atk,lk|damage,atk,4,self
-T03|Ignite|5|1|damage,atk*4,100,ondeath,field
-T04|Energy Rifle|4|1|elecdamage,atk,100
-T05|Electric Blaster|5|3|elecdamage,atk*3,100,delay1
-T06|Worn Syringes|0|2|poison,3,lk|None,0,6
-T07|Green Bottle|1|1|heal,10,lk|atk,1,lk|poison,3,4|damage,7,4|None,0,4
-T08|Red Bottle|1|1|heal,10,4|atk,1,4|poison,3,lk|damage,7,lk|None,0,4
-T09|Blue Bottle|1|1|damage,5,100
-T10|Electric Taser|2|1|elecdamage,atk/2,100
-T11|Zap|2|1|elecdamage,atk,100
-T12|Poker Chip|1|1|cd,4,100
-T13|Lucky Coin|1|1|lk,2,lk,allies|damage,7,7,self
-T14|Riverboat Six-shooter|2|1|damage,atk*3,lk
-T15|Makeshift Generator|5|1|recharge,7,100,afterbattle
-T16|Wooden Whistle|3|0|flee,Z,lk|None,0,5
-T17|Steel Whistle|5|0|flee,Z,lk|summon,Z,1
-T18|Lead Whistle|7|0|flee,Z,lk,loot|None,0,10
-T19|Repellent Whistle|7|0|flee,Z,100,enemies
+T01|Gnaw|2|1|None|damage,atk,100
+T02|Broken Rifle|2|1|Either deals electrical damage or explodes and damages yourself.|elecdamage,atk,lk|damage,atk,4,self
+T03|Ignite|5|1|None|damage,atk*4,100,ondeath,field
+T04|Energy Rifle|4|1|Deals electrical damage.|elecdamage,atk,100
+T05|Electric Blaster|6|3|Deals increased electric damage, but costs more to fire.|elecdamage,atk*2.5,100,delay1
+T06|Worn Syringes|0|2|Has a chance to poison the enemy.|poison,3,lk|None,0,6
+T07|Green Bottle|1|1|Effects are random, but you may want to drink this.|heal,10,lk|atk,1,lk|lk,1,lk|damage,7,4|poison,3,4
+T08|Red Bottle|1|1|Effects are random, but you may want to throw this.|df,-1,lk|poison,3,lk|damage,7,lk|heal,10,4|atk,1,4
+T09|Blue Bottle|0|1|Deals small physical damage.|damage,6,100
+T10|Electric Taser|2|1|Does light electrical damage.|elecdamage,atk/2,100
+T11|Zap|2|1||elecdamage,atk,100
+T12|Poker Chip|1|1|Boosts your crit damage for this battle.|cf,4,100,self
+T13|Lucky Coin|1|1|Could increase your luck, or damage yourself.|lk,2,lk,self|damage,7,7,self
+T14|Riverboat Six-shooter|2|1|Could deal massive electrical damage, backfire and damage you or do nothing.|damage,atk*3,lk|damage,atk,4,self|None,0,16
+T15|Makeshift Generator|5|1|Gives you power over time after a small investment.|ROT,2,100
+T16|Wooden Whistle|3|0|Could cause a zoomorph to flee from battle.|flee,Z,lk|None,0,5
+T17|Steel Whistle|5|0|Could likely cause a zoomorph to flee, but attracts a zoomorph if failure.|flee,Z,lk|summon,Z,1
+T18|Lead Whistle|7|0|Could rarely cause a zoomorph to flee and drop loot.|flee,Z,lk,loot|None,0,10
+T19|Repellent Whistle|7|0|If only zoomorphs are left, cause them all to flee.|flee,Z,100,enemies
+T20|Lucky Coin|1|1|Could increase your luck, or damage yourself.|lk,2,lk,enemies|damage,7,7,self

@@ -1,8 +1,8 @@
-#ID|Name|Effects...
-I01|Spare R.A.M.|heal,10
-I02|Volume Slider|heal,10|df,2
-I03|R.A.M. Sandwich|heal,25
-I04|USB Port-obello Burger|HOT,15,4
-I05|Button Battery|recharge,10
-I06|Lithium-ion Battery|recharge,30
-I07|Holo Rab_bit's Foot|lk,5
+#ID|Name|desc|Effects...
+I01|Spare R.A.M.|Heals for 10.|heal,10
+I02|Volume Slider|Heals for 10 and increases def by 2 for this battle.|heal,10|df_tmp,2
+I03|R.A.M. Sandwich|Heals for 25.|heal,25
+I04|USB Port-obello Burger|Heals for 60hp over 4 turns.|HOT,15,4
+I05|Button Battery|Restores 10 ep.|recharge,10
+I06|Lithium-ion Battery|Restores 10 ep.|recharge,30
+I07|Holo Rab_bit's Foot|Increases lk by 5 for this battle.|lk,5

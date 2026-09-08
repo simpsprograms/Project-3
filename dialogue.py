@@ -23,7 +23,7 @@ def dispStory(story_path):
     #initialise pygame
     pygame.init()
     WIDTH, HEIGHT = 1440, 810
-    FPS, SCROLLSPEED = 60, 5
+    FPS, SCROLLSPEED, VOLUME = 60, 2, 1
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Project 3")
     clock = pygame.time.Clock()
@@ -66,6 +66,17 @@ def dispStory(story_path):
     with open(story_path, 'r') as file:
         story = file.readlines()
 
+    bgimg, bg_music = story.pop(0).strip().split('|')
+    if bgimg:
+        bg_img = pygame.image.load(bgimg).convert_alpha()
+        bg_img = pygame.transform.scale(bg_img, screen.get_rect().size)
+        screen.blit(bg_img, (0,0))
+    if bg_music:
+        pygame.mixer.init()
+        pygame.mixer.music.load(bg_music)
+        pygame.mixer.music.set_volume(VOLUME)
+        pygame.mixer.music.play(-1)
+
     start_time = pygame.time.get_ticks()
     output = []
     speaker_img = None
@@ -73,11 +84,12 @@ def dispStory(story_path):
     while isRunning:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                isRunning = False
+                pass #don't let player quit out of dialogue
 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN: #mouse button clicked
                 if len(story) != 0:
                     if story[0][0] == '$':
+                        start_time = 0
                         for option, result in options_available:
                             if options[option][1].collidepoint(event.pos):
                                 performResult(result)
@@ -85,8 +97,11 @@ def dispStory(story_path):
                                 options_available = []
                                 break
                     else:
-                        story.pop(0)
-                        start_time = pygame.time.get_ticks()
+                        if text_progress != 1:
+                            start_time = 0
+                        else:
+                            story.pop(0)
+                            start_time = pygame.time.get_ticks()
                 while len(story) != 0 and story[0][0] == '#': #skip comments
                     story.pop(0)
 
@@ -98,6 +113,7 @@ def dispStory(story_path):
                 if options_available:
                     pass
                 else:
+                    start_time = pygame.time.get_ticks()
                     options_available = []
                     line = story[0]
                     line = line.strip('\n').strip('$')
@@ -144,8 +160,10 @@ def dispStory(story_path):
             text_surf.fill((0,0,0,200))
             text_surf.blit(header_render, (20, 15))
             text_surf.blit(text_render, (20, 55))
-        
+
         screen.fill((64, 64, 64))
+        if bgimg:
+            screen.blit(bg_img, (0,0))
         if speaker_img:
             screen.blit(speaker_img, speaker_rect) 
         screen.blit(text_surf, (WIDTH*0.05, HEIGHT*0.65))

@@ -8,12 +8,18 @@ import puzzlebox
 #initialise pygame
 pygame.init()
 WIDTH, HEIGHT = 1440, 810
-FPS = 60
+FPS,VOLUME = 60,1
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Project 3")
 clock = pygame.time.Clock()
 
 menu_font = pygame.font.SysFont("Courier_New", 48, bold = True)
+
+#initialise music
+pygame.mixer.init()
+pygame.mixer.music.load("audio/chill.wav")
+pygame.mixer.music.set_volume(VOLUME)
+pygame.mixer.music.play(-1)
 
 #menu buttons setup
 play_surf = pygame.Surface((int(WIDTH*0.5), int(HEIGHT*0.1)), pygame.SRCALPHA)
@@ -67,32 +73,64 @@ while isMenu:
 
 pygame.quit()
 
-commands = [['D', 'intro.txt']]
-threat = 13
-
 #game loop
-Player = models.Player(Name = "Player", hp = 20, ep = 10, df = 2, atk = 5, lk = 5)
-Player.GainItem(battle.GetItem("I02"), 5)
-Player.GainItem(battle.GetItem("I05"), 5)
+#check for previous progress
+try:
+    with open('text/saves.txt', 'r') as file:
+        lines = file.readlines()
+        if len(lines) > 0 and lines[0].isnumeric:
+            respawns = int(lines[0])
+        else:
+            respawns = 0
+except Exception as e:
+    respawns = 0
 
-Player.GainTool(battle.GetItem("T01"))
-Player.GainTool(battle.GetItem("T04"))
-Player.GainTool(battle.GetItem("T13"))
 
 while isPlaying:
-    if len(commands) == 0:
-        print("commands empty")
-        isPlaying = False
-    next_command = commands.pop(0)
-    if next_command[0] == 'D':
-        commands.extend(dialogue.dispStory('text/story/' + next_command[1]))
-    elif next_command[0] == 'B':
-        Name, colour, img, desc, enemies = battle.SetUpBattle(next_command[1], threat)       
-        battle.StartBattle(Name, img, colour, Player, enemies)
-    elif next_command[0] == 'M':
-        puzzlebox.puzzlebox()
-    else:
-        print("Invalid command")
+    Player = models.Player(Name = "Player", hp = 40, ep = 10, df = 2, atk = 10, lk = 5)
+    Player.GainItem(battle.GetItem("I02"), 5)
+    Player.GainItem(battle.GetItem("I04"), 5)
+    Player.GainItem(battle.GetItem("I05"), 5)
+
+    Player.GainTool(battle.GetItem("T09"))
+    Player.GainTool(battle.GetItem("T04"))
+    Player.GainTool(battle.GetItem("T06"))
+    Player.GainTool(battle.GetItem("T13"))
+    Player.GainTool(battle.GetItem("T15"))
+    
+    isAlive = True
+    commands = [['D', 'video1.txt']]
+    threat = 7
+    
+    while isAlive:
+        if len(commands) == 0:
+            print("commands empty")
+            isAlive = False
+        else:
+            next_command = commands.pop(0)
+            if next_command[0] == 'D':
+                commands.extend(dialogue.dispStory('text/story/' + next_command[1]))
+            elif next_command[0] == 'B':
+                Name, colour, img, desc, enemies = battle.SetUpBattle(next_command[1], threat)       
+                isAlive = battle.StartBattle(Name, img, colour, Player, enemies)
+                threat += 1.5
+            elif next_command[0] == 'M':
+                puzzlebox.puzzlebox()
+            else:
+                print("Invalid command")
+                isPlaying, isAlive = False, False
+
+    respawns += 1
+
+    result = dialogue.dispStory('text/story/badendscreen.txt')
+    if result[0][0] == 'Y':
+        print("player continues")
+        continue
+    
+    elif result[0][0] == 'N':
+        with open('text/saves.txt', 'w') as file:
+            file.write(str(respawns))
         isPlaying = False
 
+pygame.quit()
 sys.exit()

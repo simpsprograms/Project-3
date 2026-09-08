@@ -9,4 +9,4 @@ S03|Street|GREEN|pics/scene_street.png|Just your typical street. You can hear so
 S04|Zouquee GoGo|BLUE|pics/scene_club.png|A vibrant, energetic club.|002|008|009|010|011
 #Ah Bengs
 S05|Zouquee GoGo|BLUE|pics/scene_club.png|A vibrant, energetic club. You feel uneasy.|012|012+002|009|012
-Riverboat||YELLOW|pics/scene_.png|A dark, noisy room in the riverboat.|009|014|015+009|013
+S06|Riverboat|YELLOW|pics/scene_riverboat.png|A dark, noisy room in the riverboat.|009|014|015+009|013

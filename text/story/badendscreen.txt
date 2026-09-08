@@ -1,0 +1,24 @@
+|
+|Credits|Project 3 - a game by group 2
+|Credits|Made in Pygame with Python
+|Credits|Main programmer: Poh Siang
+|Credits|Story: Chika
+|Credits|Enemy Ideas: Iggy
+|Credits|Images: Dakshin
+|Credits|Music: Haris Gunasekaran
+||... ...
+||Your story ends here, for now.
+||However, death is not the end.
+||You can choose to respawn, try for a better ending.
+||Would you like to continue, or save your progress for now and exit the program?
+$||Continue on? Or save and exit?
+1|Continue|end=1
+3|Save and Exit|end=2
+?end=1
+||Persistent. Your next run will benefit from that.
+||And who knows, there may be a few new things in store for you...
+>Y|None
+?end=2
+||So be it. Your progress will be saved.
+||Have a great day. Your dream will be waiting here for your return.
+>N|None

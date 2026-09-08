@@ -4,9 +4,9 @@ None|You|"...whatever, no time to think about that, I should get to work."
 #lines starting with $ are options. $ text is displayed at the bottom, and is followed by options 1,2,3 starting with 1|2|3|, with an extra field for the results.
 #options are in the form number|text|result
 #lines starting with ? are conditions. If the conditions are met, the following text is displayed, else it looks for the next line starting with ?
-$|You|"Hmm... where should I go?
+$|You|"Hmm... where should I go?"
 1|Left|story=1
-2|Centre|story=2
+2|1234567890123456789012345678901234567890|story=2
 3|Right|story=3
 ?story=1
 |You|"Alright then, i'll go left."
