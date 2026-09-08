@@ -1,0 +1,6 @@
+|You|”Nah, I’ll go with Posse to clear the Street.” 
+Taomei.png|Tao Mei|”Your loss, bro.” 
+||You are walking along the street to patrol.
+||Scrappers approach you. 
+Posse.png|Posse|”Easy game, let’s get this done and over with.”
+>B|___>D|dr1d2m1success.txt

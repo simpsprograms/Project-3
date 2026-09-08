@@ -1,0 +1,12 @@
+||Heading towards the bar counter, you see a suspicious trapdoor in full view. 
+||The ice machine is also weirdly off center.
+$||Choose,
+1|Trapdoor|barc=1
+2|Ice Machine|barc=2
+3|Return|barc=3
+?barc=1
+>D|trapdoor.txt
+?barc=2
+>D|icem.txt
+?barc=3
+>D|dr1d2m2s2choices.txt

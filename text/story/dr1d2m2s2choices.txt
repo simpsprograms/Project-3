@@ -1,0 +1,10 @@
+$||Do you investigate: 
+1|Bar|loc1=1
+2|Dance Floor|loc1=2
+3|Couch|loc1=3
+?loc1=1
+>D|barc.txt
+?loc1=2
+>D|dancef.txt
+?loc1=3
+>D|couch.txt

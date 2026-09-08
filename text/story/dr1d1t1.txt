@@ -1,0 +1,9 @@
+||Ring… Ring… Ring…
+|You|“Ugh… I swear I had the weirdest dream…“
+|You|“...whatever, no time to think about that, I should get to work.” 
+||You are walking towards your workplace, Digital Systems & Intelligence (DSI), the world’s most intelligent intelligence agency. 
+||Thugs approach you. 
+|Thug 1|“I don’t like his face.” 
+|Thug 2|“Enough reason to attack.”
+||Oh no, they have decided to target you! 
+>B|___>D|dr1d1t1success.txt

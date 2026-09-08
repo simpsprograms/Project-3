@@ -1,0 +1,15 @@
+||The battle has scared off all the party animals. Only the heavy panting of the bartender could be heard. 
+||Tao Mei holds the bartender by the scruff of his neck.
+|Tao Mei| “where the goods at?”
+|Bartender| “i’d rather die before i rat out my Ang Meng Bo!”
+||You look around, and instantly your eyes are drawn towards certain places.
+$||Do you investigate: 
+1|Bar|loc=1
+2|Dance Floor|loc=2
+3|Couch|loc=3
+?loc=1
+>D|barc.txt
+?loc=2
+>D|dancef.txt
+?loc=3
+>D|couch.txt

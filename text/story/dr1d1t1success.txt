@@ -1,0 +1,26 @@
+|You|“...rough. Thank god for BCCT sir stop sir.” 
+||After brushing off the thugs, you made your way to the DSI camp. Unfortunately, the interruptions meant it was almost evening by the time you reached the agency.
+|You|”Phew, that took forever… hopefully I’m not late-”
+|Big J|”Good evening cadet. You sure took your time.”
+||Your commander appeared out of nowhere. He had a neutral expression, but you felt like you were in trouble.
+|You|”Oh! Good morning sir! Sorry for the tardiness, I was jumped by a bunch of thugs-”
+|Big J|”No need to explain. You’re not on duty today, so you’re not in trouble. Just don’t let it happen again. Now get to your barracks.”
+||Big J hands you your bunk keys, pointing to your assigned bunk.
+|You|”Yes sir!”
+||You quickly made your way to your bunk, throwing the door open.
+Posse.png|???|”AHHHH!”
+Posse.png||You jump back, not expecting someone else to be in your bunk.
+Posse.png|You|”Woah! Who are you!?”
+Posse.png||You look at the other human in the bunk. Well, half-human. They have a television for a head, a collar around their neck with a camera on it, and a cable tail hidden behind them with a USB plug on the end. They appeared just as surprised as you.
+Posse.png|???|”Who am I? Who are you!? And what are you doing in my bunk!”
+Posse.png|You|”Your bunk? I was told this was my bunk!”
+Posse.png|???|”ooooooh”
+Posse.png||The television slaps their forehead.
+Posse.png|???|”You’re the new cadet, right? I’m your partner. We share a bunk.”
+Posse.png|You|”...partner?”
+Posse.png|???|”Yeah! They like pairing co-workers up, so we can look out for each other. Whenever we’re called on special missions, those that require multiple cadets, they will appoint pairs to go for these missions.”
+Posse.png|You|”Ohh… I guess that makes sense.”
+Posse.png|???|”I’m Posse, by the way. Nice to meet you!”
+Posse.png|Posse|”Here, I’ll help you unpack your stuff. Then we can get ready for our first day tomorrow!”
+||... …
+>D|dr1d2.txt

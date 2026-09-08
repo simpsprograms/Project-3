@@ -1,0 +1,12 @@
+||As you reach the edge dance floor, knocking on each tile as you go, one of the tiles seems hollow.
+
+$||Do you:
+1. Remove the tile
+2. Return
+
+1|Remove|dancef=1
+3|Return|dancef=3
+?dancef=1
+>D|danceftile.txt
+?dancef=3
+>D|dr1d2m2s2choices.txt

@@ -1,0 +1,33 @@
+|You|”I’ll come with. Time to try something new. What’s the mission?”
+Taomei.png|Tao Mei|”We need to stake out this up and coming club to investigate traces of the elusive Ang Meng Bo society, dealing in protection racketeering and drug trafficking, recently releasing chipium, revolutionalising the psychedelic market.”
+||You and Tao Mei have reached the club. 
+||Upon entry, a bouncer stops the both of you due to Tao Mei’s excessively flamboyant fabulously fantastically colourful outfit. 
+||He scans you up and down with a suspicious, alluring glint in his eye. His gaze shifts over to Tao Mei.
+|Bouncer|”The heck is this outfit? I’m sure as hell not letting you in.” 
+
+$|Pick your poison.| 
+A) Bribe him with company funds
+B) Use Thousand Years of Death
+C) Give him a napkin with Posse’s number on it.
+
+1|Bribe|bouncer=1
+2|TYOD|bouncer=2
+3|Napkin|bouncer=3
+
+?bouncer=1
+||He looks at the cash and smiles approvingly. Entry gained. (-5 IMP)
+?bouncer=2
+||He collapses and deflates into himself. OHKO! Entry gained. (+1 ATK) (+10 IMP)
+?bouncer=3
+||He smiles at you seductively. Entry gained. 
+
+?True
+||You have gained entry. 
+|| Loud booming bass reverberates, echoing around you.
+|| The two of you head straight to the bar.
+|Bartender|“Anything for you two lovely bots?”
+Taomei.png|Tao Mei|“Whaddaya know about Ignivius?”
+|Bartender|“Get a drink.”
+|You|“Where is he!”
+|Bartender|”NARCS! Get ‘em!” 
+>B|___>D|dr1d2m2s2.txt

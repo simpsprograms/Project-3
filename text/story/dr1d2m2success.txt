@@ -1,0 +1,6 @@
+Taomei.png|Tao Mei|“We make a pretty good team. Let’s head back to base.”
+||You and Tao Mei have reached DSI.
+||Tao Mei reports directly to Big J.
+|Big J|”Good job to the both of you. I have another mission for you both to complete. Find Ignivius.”
+|Big J|”For now, rest up. One more day won’t do that slippery bastard harm.”
+>D|dr1d3m3.txt

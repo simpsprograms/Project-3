@@ -1,0 +1,6 @@
+Posse.png|Posse|”... why was that so violent…”
+||You and Posse have reached DSI.
+|Big J|”Good job to the both of you. I have another mission for you both to complete. Get details from Tao Mei.”
+|Tao Mei|”Ang Meng Bo ratted on Ignivius. He’s now in the Retention Barracks of Singaplex.”
+|Tao Mei|”For now, rest up. One more day won’t do that slippery bastard harm.”
+>D|dr1d3m3.txt

@@ -1,0 +1,18 @@
+||... …
+|Big J|”Good morning cadets, here are your designations for today:”
+||Your commander took out a clipboard and began reading.
+|Big J|”Tao, gather information about the… Ignivius incident. Y/N, street duty. That is all.”
+||Your commander dismissed the parade, then walked away.
+Posse.png|Posse|”Ooh, street duty… You gotta walk around and make sure no one’s causing trouble. Basically what you were doing already yesterday, right?”
+Posse.png|You|”Wait, your name wasn’t called?”
+Posse.png|Posse|”Yeah, that happens sometimes, especially when we have more people than assignments. It means I can do whatever I want…”
+Posse.png||Posse yawns.
+Posse.png|Posse|”Like lazing in bunk. Cya.”
+||Posse turns to leave, walking back to your bunk.
+||Guess it's time to begin your duty.
+||You are walking along the street to patrol.
+||Thugs approach you. 
+|You|”Sigh, here we go again.”
+||Drones appear. 
+|You|”Huh… thats new…” 
+>B|___>D|dr1d2b1success.txt
