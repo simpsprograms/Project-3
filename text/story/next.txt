@@ -1,0 +1,15 @@
+pics/scene_street|audio/chill.wav
+|You|"Ouf, that was a tough battle. Where to next?"
+$|You|"Where should I go?"
+1|Streets|story=1
+2|Zouquee GoGo|story=2
+3|Riverboat|story=3
+?story=1
+|You|"Alright, back on the streets."
+>B|S01>D|boss.txt
+?story=2
+|You|"Sure, let's check out the club."
+>B|S05>D|boss.txt
+?story=3
+|You|"Cool, let's ride the riverboat."
+>B|S08>D|boss.txt

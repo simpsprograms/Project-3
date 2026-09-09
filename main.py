@@ -87,7 +87,7 @@ except Exception as e:
 
 
 while isPlaying:
-    Player = models.Player(Name = "Player", hp = 40, ep = 10, df = 2, atk = 10, lk = 5)
+    Player = models.Player(Name = "Player", hp = 20, ep = 10, df = 2, atk = 10, lk = 5)
     Player.GainItem(battle.GetItem("I02"), 5)
     Player.GainItem(battle.GetItem("I04"), 5)
     Player.GainItem(battle.GetItem("I05"), 5)
@@ -99,8 +99,8 @@ while isPlaying:
     Player.GainTool(battle.GetItem("T15"))
     
     isAlive = True
-    commands = [['D', 'video1.txt']]
-    threat = 7
+    commands = [['D', 'intro.txt']]
+    threat = 2
     
     while isAlive:
         if len(commands) == 0:

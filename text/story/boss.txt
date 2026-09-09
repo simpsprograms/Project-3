@@ -1,0 +1,16 @@
+pics/scene_street|audio/chill.wav
+|You|"The enemies are definitely getting stronger..."
+|You|"Feels like something big's coming up, i should prepare myself."
+$|You|"Where should I go? (Boss)"
+1|Streets|story=1
+2|Zouquee GoGo|story=2
+3|Riverboat|story=3
+?story=1
+|You|"Alright, back on the streets."
+>B|S03>D|next.txt
+?story=2
+|You|"Sure, let's check out the club."
+>B|S06>D|next.txt
+?story=3
+|You|"Cool, let's ride the riverboat."
+>B|S09>D|next.txt

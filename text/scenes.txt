@@ -6,7 +6,12 @@ S01|Street|GREEN|pics/scene_street.png|Just your typical street.|001|002|003|005
 S02|Street|GREEN|pics/scene_street.png|Just your typical street. You can feel eyes watching you.|001
 #Scrapper Gang
 S03|Street|GREEN|pics/scene_street.png|Just your typical street. You can hear soft mumbling.|006|007|008+003|006|008
+#No Ah Bengs
 S04|Zouquee GoGo|BLUE|pics/scene_club.png|A vibrant, energetic club.|002|008|009|010|011
+S05|Zouquee GoGo|BLUE|pics/scene_club.png|A vibrant, energetic club.|002|008|009|010|011|012
 #Ah Bengs
-S05|Zouquee GoGo|BLUE|pics/scene_club.png|A vibrant, energetic club. You feel uneasy.|012|012+002|009|012
-S06|Riverboat|YELLOW|pics/scene_riverboat.png|A dark, noisy room in the riverboat.|009|014|015+009|013
+S06|Zouquee GoGo|BLUE|pics/scene_club.png|A vibrant, energetic club. You feel uneasy.|012|012+002|009|012
+S07|Riverboat|YELLOW|pics/scene_riverboat.png|A dark, noisy room in the riverboat.|009|013|015
+S08|Riverboat|YELLOW|pics/scene_riverboat.png|A dark, noisy room in the riverboat.|009|013|014|015
+#Boss
+S09|Riverboat|YELLOW|pics/scene_riverboat.png|A dark, noisy room in the riverboat. It feels eerily quiet.|009|014|015+013
