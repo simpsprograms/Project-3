@@ -63,6 +63,7 @@ def dispStory(story_path):
     ]
 
     story = []
+    text_progress = 0
     with open(story_path, 'r') as file:
         story = file.readlines()
 

@@ -1,9 +1,13 @@
-import pygame, sys
+import pygame, sys, os
 from random import random
 import battle
 import models
 import dialogue
 import puzzlebox
+
+# Mute game if the script is running inside a GitHub Codespace
+if "CODESPACES" in os.environ:
+    os.environ["SDL_AUDIODRIVER"] = "dummy"
 
 #initialise pygame
 pygame.init()
@@ -87,7 +91,7 @@ except Exception as e:
 
 
 while isPlaying:
-    Player = models.Player(Name = "Player", hp = 20, ep = 10, df = 2, atk = 10, lk = 5)
+    Player = models.Player(Name = "Player", hp = 20, ep = 10, df = 2, atk = 5, lk = 4)
     Player.GainItem(battle.GetItem("I02"), 5)
     Player.GainItem(battle.GetItem("I04"), 5)
     Player.GainItem(battle.GetItem("I05"), 5)

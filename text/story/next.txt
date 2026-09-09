@@ -1,4 +1,4 @@
-pics/scene_street|audio/chill.wav
+pics/scene_street.png|audio/chill.wav
 |You|"Ouf, that was a tough battle. Where to next?"
 $|You|"Where should I go?"
 1|Streets|story=1

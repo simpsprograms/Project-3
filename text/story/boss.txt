@@ -1,4 +1,4 @@
-pics/scene_street|audio/chill.wav
+pics/scene_street.png|audio/chill.wav
 |You|"The enemies are definitely getting stronger..."
 |You|"Feels like something big's coming up, i should prepare myself."
 $|You|"Where should I go? (Boss)"
